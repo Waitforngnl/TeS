@@ -1,0 +1,47 @@
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.status-pending {
+    background-color: #fffbeb;
+    color: #b45309;
+    border: 1px solid #fcd34d;
+}
+
+.status-completed {
+    background-color: #f0fdf4;
+    color: #15803d;
+    border: 1px solid #86efac;
+}
+
+.status-cancelled {
+    background-color: #fef2f2;
+    color: #b91c1c;
+    border: 1px solid #fca5a5;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-content-animate {
+    animation: slideIn 0.3s ease-out forwards;
+}
+
+.order-row:hover td {
+    background-color: #f9fafb;
+}

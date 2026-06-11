@@ -1,0 +1,40 @@
+@import 'tailwindcss';
+/* @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap'); */
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* --font-roboto: Roboto, sans-serif; */
+
+    --color-ef-fg: #5C6A72;
+    --color-ef-red: #F85552;
+    --color-ef-orange: #F57D26;
+    --color-ef-yellow: #DFA000;
+    --color-ef-green: #8DA101;
+    --color-ef-blue: #3A94C5;
+    --color-ef-purple: #DF69BA;
+    --color-ef-aqua: #35A77C;
+    --color-ef-grey-0: #A6B0A0;
+    --color-ef-grey-1: #939F91;
+    --color-ef-grey-2: #829181;
+    --color-ef-statusline-1: #93B259;
+    --color-ef-bg-dim: #F2EFDF;
+    --color-ef-bg-0: #FFFBEF;
+    --color-ef-bg-1: #F8F5E4;
+    --color-ef-bg-2: #F2EFDF;
+    --color-ef-bg-3: #EDEADA;
+    --color-ef-bg-4: #E8E5D5;
+    --color-ef-bg-5: #BEC5B2;
+    --color-ef-bg-red: #FFE7DE;
+    --color-ef-bg-yellow: #FEF2D5;
+    --color-ef-bg-green: #F3F5D9;
+    --color-ef-bg-blue: #ECF5ED;
+    --color-ef-bg-purple: #FCECED;
+    --color-ef-bg-visual: #F0F2D4;
+}

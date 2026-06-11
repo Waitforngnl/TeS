@@ -1,0 +1,1 @@
+console.log('Product page script loaded');
