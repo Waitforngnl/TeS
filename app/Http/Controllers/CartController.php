@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Products;
+use App\Models\Products; // Giữ nguyên Model có chữ 's' theo cấu trúc nhóm bạn
 
 class CartController extends Controller
 {
@@ -19,35 +19,49 @@ class CartController extends Controller
         return view('cart.index', compact('cart', 'total'));
     }
 
-    public function addToCart($id)
+    // CHỈNH SỬA: Thêm Request $request để nhận dữ liệu số lượng và loại nút bấm từ Form gửi lên
+    public function addToCart(Request $request, $id)
     {
         $product = Products::findOrFail($id);
 
-        // If product is out of stock, warn user
+        // Nếu sản phẩm hết hàng, thông báo cho người dùng
         if ($product->stock_status === 'OUT_OF_STOCK' || $product->stock_quantity <= 0) {
             return redirect()->back()->with('error', 'Sản phẩm đã hết hàng.');
         }
 
+        // Lấy số lượng người dùng muốn thêm (mặc định là 1 nếu nhấn từ trang danh sách)
+        $quantityToAdd = (int) $request->input('quantity', 1);
+        if ($quantityToAdd < 1) { $quantityToAdd = 1; }
+
         $cart = session()->get('cart', []);
         $currentQty = $cart[$id]['quantity'] ?? 0;
 
-        // Prevent adding more than available stock
-        if ($currentQty + 1 > $product->stock_quantity) {
-            return redirect()->back()->with('error', 'Không thể thêm sản phẩm vì không đủ số lượng. Còn ' . $product->stock_quantity . ' sản phẩm.');
+        // Ngăn thêm vượt quá số lượng tồn kho trong Database
+        if ($currentQty + $quantityToAdd > $product->stock_quantity) {
+            return redirect()->back()->with('error', 'Không thể thêm vì không đủ số lượng trong kho. Hiện tại bạn đã có ' . $currentQty . ' sản phẩm trong giỏ, kho chỉ còn lại ' . $product->stock_quantity . ' sản phẩm.');
         }
 
+        // Tiến hành cập nhật hoặc thêm mới vào Session giỏ hàng
         if(isset($cart[$id])) {
-            $cart[$id]['quantity']++;
+            $cart[$id]['quantity'] += $quantityToAdd;
         } else {
             $cart[$id] = [
                 "name" => $product->name,
-                "quantity" => 1,
+                "quantity" => $quantityToAdd,
                 "price" => $product->price,
                 "image" => $product->image_url
             ];
         }
 
         session()->put('cart', $cart);
+
+        // LOGIC CHUYỂN HƯỚNG THEO NÚT BẤM:
+        // Nếu người dùng nhấn nút "Mua ngay" (value="buy_now"), chuyển thẳng đến trang giỏ hàng
+        if ($request->input('action') === 'buy_now') {
+            return redirect()->route('cart')->with('success', 'Đã thêm vào giỏ hàng, tiến hành thanh toán thôi nào!');
+        }
+
+        // Ngược lại nếu bấm "Thêm vào giỏ hàng", ở lại trang cũ và báo thành công
         return redirect()->back()->with('success', 'Đã thêm sản phẩm vào giỏ hàng!');
     }
 
@@ -71,9 +85,7 @@ class CartController extends Controller
             $product = Products::find($id);
 
             if($request->action == 'increase') {
-                // Prevent increasing beyond stock
                 if (!$product || $product->stock_status === 'OUT_OF_STOCK' || $cart[$id]['quantity'] + 1 > $product->stock_quantity) {
-                    // If product has 0 stock -> remove from cart and show removed modal
                     if (!$product || $product->stock_quantity <= 0 || $product->stock_status === 'OUT_OF_STOCK') {
                         unset($cart[$id]);
                         session()->put('cart', $cart);
@@ -86,7 +98,6 @@ class CartController extends Controller
                         ]);
                     }
 
-                    // If product has limited stock (< desired), keep previous quantity and show options
                     return redirect()->back()->with('conflict', [
                         'id' => $id,
                         'type' => 'limit',
@@ -109,7 +120,6 @@ class CartController extends Controller
                 if ($newQty < 1) {
                     unset($cart[$id]);
                 } else {
-                    // ensure not exceeding stock
                     if ($product && $product->stock_quantity < $newQty) {
                         $newQty = $product->stock_quantity;
                     }

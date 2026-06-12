@@ -9,13 +9,11 @@ class ChatController extends Controller
 {
     public function askAI(Request $request)
     {
-        // Nhận tin nhắn từ giao diện gửi lên
         $userMessage = $request->input('message');
 
         // 1. Kéo dữ liệu thực tế từ Database (Chỉ lấy món CÒN HÀNG)
         $availableProducts = Products::where('stock_status', 'AVAILABLE')->get();
 
-        // Ép danh sách thành 1 đoạn văn bản để AI dễ đọc
         $menuList = $availableProducts->map(function($p) {
             return "- " . $p->name . " (Giá: " . number_format($p->price) . "đ) - Mô tả: " . $p->description;
         })->implode("\n");
@@ -45,8 +43,6 @@ class ChatController extends Controller
             $aiReply = $data['candidates'][0]['content']['parts'][0]['text'] ?? 'Dạ quán em đang hơi đông, anh chị đợi chút nhé!';
             return response()->json(['reply' => $aiReply]);
         }
-
-        // Đã đổi lại thành 500 để ẩn lỗi kỹ thuật với khách hàng
         return response()->json(['reply' => 'Xin lỗi, hệ thống AI đang bảo trì, vui lòng thử lại sau!'], 500);
     }
 }

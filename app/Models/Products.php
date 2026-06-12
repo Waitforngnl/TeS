@@ -12,14 +12,16 @@ class Products extends Model
     use HasFactory;
 
     protected $fillable = [
-        'category_id',
-        'slug',
-        'name',
-        'description',
-        'price',
-        'image_url',
-        'stock_status',
-        'stock_quantity',
+        'name', 
+        'slug', 
+        'category_id', 
+        'price', 
+        'description', 
+        'ingredients',         
+        'usage_instruction',    
+        'image_url', 
+        'stock_status', 
+        'stock_quantity'
     ];
 
     protected static function boot()

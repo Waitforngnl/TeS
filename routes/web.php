@@ -27,6 +27,8 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/chat/ask', [ChatController::class, 'askAI'])->name('chat.ask');
 
+//Route::view('/contact', 'contact')->name('contact');
+
 Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('/cart/add/{id}', [CartController::class, 'addToCart'])->name('cart.add');

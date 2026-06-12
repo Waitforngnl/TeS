@@ -39,7 +39,7 @@
                                     class="text-ef-red">*</span></label>
                             <input type="text" name="name" id="name" value="{{ old('name') }}" required
                                 class="w-full px-3 py-2.5 bg-ef-bg-0 border border-ef-bg-4 rounded-lg text-sm focus:border-ef-blue focus:ring-1 focus:ring-ef-blue/20 outline-none transition-all"
-                                placeholder="VD: Trà Đào Cam Sả">
+                                placeholder="VD: Trà Ô Long Đỏ Sơn La">
                         </div>
                         <div class="col-span-2 md:col-span-1">
                             <label class="block text-[10px] font-black uppercase mb-2 text-ef-grey-2">Đường dẫn
@@ -47,11 +47,29 @@
                             <input type="text" name="slug" id="slug" value="{{ old('slug') }}" readonly
                                 class="w-full px-3 py-2.5 bg-ef-bg-2 border border-ef-bg-4 rounded-lg text-sm font-mono text-ef-grey-1 outline-none">
                         </div>
+
+                        {{-- 1. Ô nhập liệu Mô tả sản phẩm --}}
                         <div class="col-span-2">
-                            <label class="block text-[10px] font-black uppercase mb-2 text-ef-grey-1">Mô tả ngắn</label>
-                            <textarea name="description" rows="4"
+                            <label class="block text-[10px] font-black uppercase mb-2 text-ef-grey-1">Mô tả sản phẩm</label>
+                            <textarea name="description" rows="3"
                                 class="w-full px-3 py-2.5 bg-ef-bg-0 border border-ef-bg-4 rounded-lg text-sm focus:border-ef-blue outline-none transition-all resize-none"
-                                placeholder="Viết vài dòng giới thiệu về món này...">{{ old('description') }}</textarea>
+                                placeholder="Nhập đoạn mô tả chi tiết, câu chuyện hoặc đặc điểm nổi bật của loại trà này...">{{ old('description') }}</textarea>
+                        </div>
+
+                        {{-- 2. Ô BỔ SUNG: Nhập liệu Thành phần --}}
+                        <div class="col-span-2">
+                            <label class="block text-[10px] font-black uppercase mb-2 text-ef-grey-1">Thành phần</label>
+                            <textarea name="ingredients" rows="3"
+                                class="w-full px-3 py-2.5 bg-ef-bg-0 border border-ef-bg-4 rounded-lg text-sm focus:border-ef-blue outline-none transition-all resize-none"
+                                placeholder="VD: 100% búp trà tươi nguyên chất được lên men bán phần...">{{ old('ingredients') }}</textarea>
+                        </div>
+
+                        {{-- 3. Ô BỔ SUNG: Nhập liệu Hướng dẫn sử dụng --}}
+                        <div class="col-span-2">
+                            <label class="block text-[10px] font-black uppercase mb-2 text-ef-grey-1">Hướng dẫn sử dụng</label>
+                            <textarea name="usage_instruction" rows="3"
+                                class="w-full px-3 py-2.5 bg-ef-bg-0 border border-ef-bg-4 rounded-lg text-sm focus:border-ef-blue outline-none transition-all resize-none"
+                                placeholder="VD: Ủ 3-5g trà với nước sôi 90°C trong vòng 45 giây...">{{ old('usage_instruction') }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -115,7 +133,7 @@
                         {{-- Preview Image --}}
                         <img id="image-preview" src="#" class="hidden w-full h-full object-cover">
 
-                        {{-- Nút xóa ảnh (Chỉ hiện khi có ảnh) --}}
+                        {{-- Nút xóa ảnh --}}
                         <button type="button" id="btn-remove-image"
                             class="hidden absolute top-2 right-2 p-1.5 bg-ef-red text-ef-bg-0 rounded-md shadow-lg hover:scale-110 transition-transform z-20">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -147,7 +165,7 @@
     </div>
 
     <script>
-        // 1. Logic Auto-slug (Gọn hơn)
+        // 1. Logic Auto-slug
         const nameInput = document.getElementById('name');
         const slugInput = document.getElementById('slug');
 
@@ -162,7 +180,7 @@
             slugInput.value = slug;
         });
 
-        // 2. Logic Hình ảnh (Preview & Validation)
+        // 2. Logic Hình ảnh
         const inputImage = document.getElementById('input-image');
         const imagePreview = document.getElementById('image-preview');
         const placeholder = document.getElementById('placeholder-info');
@@ -178,16 +196,14 @@
             dropZone.classList.replace('border-ef-red', 'border-ef-bg-4');
 
             if (file) {
-                // Kiểm tra dung lượng
                 if (file.size > MAX_SIZE) {
                     errorDisplay.innerText = "Lỗi: File vượt quá 2MB!";
                     errorDisplay.classList.remove('hidden');
                     dropZone.classList.replace('border-ef-bg-4', 'border-ef-red');
-                    this.value = ""; // Reset input
+                    this.value = ""; 
                     return;
                 }
 
-                // Đọc file và hiển thị
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     imagePreview.src = e.target.result;

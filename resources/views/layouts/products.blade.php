@@ -52,7 +52,7 @@
 
       <div class="flex items-center justify-between mb-8">
           <h1 class="text-3xl font-bold text-amber-800 uppercase tracking-wide">
-              Thực đơn
+              Kho Trà
               @if(isset($products))
                   <span class="text-sm font-normal text-gray-500 ml-2">({{ $products->total() }} món)</span>
               @endif

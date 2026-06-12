@@ -43,11 +43,14 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+        // CẬP NHẬT: Thêm validation cho 'ingredients' và 'usage_instruction'
         $validated = $request->validate([
             'name' => 'required|string|max:200',
             'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric|min:0',
             'description' => 'nullable|string',
+            'ingredients' => 'nullable|string', // <-- THÊM DÒNG NÀY
+            'usage_instruction' => 'nullable|string', // <-- THÊM DÒNG NÀY
             'image' => 'nullable|image|max:2048',
             'stock_status' => 'required|in:AVAILABLE,OUT_OF_STOCK',
             'stock_quantity' => 'required|numeric|min:0',
@@ -67,6 +70,7 @@ class ProductController extends Controller
             $validated['image_url'] = '/storage/' . $path;
         }
 
+        // Eloquent::create sẽ tự động map các trường đã validate trong mảng để lưu
         Products::create($validated);
 
         return redirect()->route('admin.products.index')->with('success', 'Đã thêm sản phẩm mới!');
@@ -74,14 +78,17 @@ class ProductController extends Controller
 
     public function update(Request $request, Products $product)
     {
+        // CẬP NHẬT: Thêm validation tương tự cho hàm update khi sửa sản phẩm
         $validated = $request->validate([
             'name' => 'required|string|max:200',
             'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric|min:0',
             'description' => 'nullable|string',
+            'ingredients' => 'nullable|string', // <-- THÊM DÒNG NÀY
+            'usage_instruction' => 'nullable|string', // <-- THÊM DÒNG NÀY
             'image' => 'nullable|image|max:2048',
             'stock_status' => 'required|in:AVAILABLE,OUT_OF_STOCK',
-            'stock_quantity' => 'required|numeric|min:0', // Bổ sung thiếu sót
+            'stock_quantity' => 'required|numeric|min:0',                                                                                                         
         ]);
 
         // Logic ép buộc số lượng và trạng thái đồng bộ
@@ -97,7 +104,6 @@ class ProductController extends Controller
 
         if ($request->hasFile('image')) {
             try {
-                // Xóa ảnh cũ
                 if ($product->image_url) {
                     $cleanPath = str_replace('/storage/', '', parse_url($product->image_url, PHP_URL_PATH));
                     Storage::disk('public')->delete($cleanPath);
@@ -119,7 +125,6 @@ class ProductController extends Controller
     {
         // 1. Xóa file ảnh vật lý nếu tồn tại
         if ($product->image_url) {
-            // Chuyển URL "/storage/products/abc.jpg" thành "products/abc.jpg" để xóa
             $filePath = str_replace('/storage/', '', $product->image_url);
 
             if (Storage::disk('public')->exists($filePath)) {
@@ -136,7 +141,6 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        // Gọi thẳng tên Product thay vì dùng đường dẫn dài
         $product = Products::findOrFail($id);
         
         return view('products.show', compact('product'));
