@@ -2,11 +2,11 @@
 1. **Clone dự án (làm 1 lần):**
 ```shell
 git clone https://github.com/Waitforngnl/TeS.git
-cd laravel-final
+cd TeS
 ```
 2. **Cấu hình:**
+Tạo file .env từ file .env.example (hoặc đổi tên)
 ```shell
-cp .env.example .env
 composer install
 npm install
 npm run build
