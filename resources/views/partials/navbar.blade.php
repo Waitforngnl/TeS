@@ -13,7 +13,7 @@
 
       <div class="flex-1 flex items-center">
           <a href="{{ route('home') }}" class="flex items-center gap-1">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-18 w-auto object-contain">
+            <img src="{{ asset('images/logo_2.png') }}" alt="Logo" class="h-18 w-auto object-contain">
             <span class="font-bold text-xl text-amber-800 tracking-tight uppercase">Tea shop</span>
           </a>
       </div>

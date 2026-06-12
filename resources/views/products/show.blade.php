@@ -13,9 +13,7 @@
     <main class="pt-24 pb-10 px-6 max-w-5xl mx-auto min-h-screen">
         
         <nav class="flex items-center gap-2 text-sm text-gray-500 mb-6">
-            <a href="{{ route('home') }}" class="hover:text-emerald-700 transition-colors">Trang chủ</a>
-            <span>&rsaquo;</span>
-            <a href="{{ route('products') }}" class="hover:text-emerald-700 transition-colors">Trà quý</a>
+            <a href="{{ route('home') }}" class="hover:text-emerald-700 transition-colors">Sản phẩm</a>
             <span>&rsaquo;</span>
             <span class="text-emerald-800 font-medium truncate">{{ $product->name }}</span>
         </nav>

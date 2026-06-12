@@ -1,11 +1,7 @@
-# to-do  
-- Thêm cái khi bấm vào products card sẽ show detailed info
-- Thêm AI chatbox icon góc dưới phải
-
 # Setup dự án
 1. **Clone dự án (làm 1 lần):**
 ```shell
-git clone
+git clone https://github.com/Waitforngnl/TeS.git
 cd laravel-final
 ```
 2. **Cấu hình:**
@@ -24,9 +20,4 @@ php artisan serve
 ```shell
 php artisan migrate:fresh --seed
 ```
-
-3. **Các nhánh trong dự án:**
-- `main` : Nhánh chính, dùng để tổng hợp lại và để nộp bài.
-- `frontend` : Nhánh làm giao diện (UI).
-- `backend` : Nhánh xử lý logic + database.
 

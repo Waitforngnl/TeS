@@ -8,6 +8,8 @@ use App\Models\Products;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use App\Imports\ProductsImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
@@ -43,7 +45,6 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        // CẬP NHẬT: Thêm validation cho 'ingredients' và 'usage_instruction'
         $validated = $request->validate([
             'name' => 'required|string|max:200',
             'category_id' => 'required|exists:categories,id',
@@ -145,4 +146,18 @@ class ProductController extends Controller
         
         return view('products.show', compact('product'));
     }
+
+    public function importExcel(Request $request)
+{
+    $request->validate([
+        'excel_file' => 'required|mimes:xlsx,xls,csv|max:5120', // Tối đa 5MB
+    ]);
+
+    try {
+        Excel::import(new ProductsImport, $request->file('excel_file'));
+        return redirect()->route('admin.products.index')->with('success', 'Nhập hàng loạt sản phẩm từ Excel thành công!');
+    } catch (\Exception $e) {
+        return redirect()->back()->withErrors(['excel_file' => 'Có lỗi xảy ra khi đọc file: ' . $e->getMessage()]);
+    }
+}
 }

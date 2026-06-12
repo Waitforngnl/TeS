@@ -26,8 +26,8 @@ Route::get('/contact', function() { return view('contact.index'); })->name('cont
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/chat/ask', [ChatController::class, 'askAI'])->name('chat.ask');
+Route::post('/admin/products/import', [App\Http\Controllers\Admin\ProductController::class, 'importExcel'])->name('admin.products.import');
 
-//Route::view('/contact', 'contact')->name('contact');
 
 Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
